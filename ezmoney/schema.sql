@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS expense;
+
+CREATE TABLE expense (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_email TEXT UNIQUE NOT NULL,
+    category TEXT NOT NULL,
+    description TEXT NOT NULL,
+    amount NUMERIC NOT NULL,
+    day INTEGER NOT NULL,
+    month INTEGER NOT NULL,
+    year INTEGER NOT NULL
+);
