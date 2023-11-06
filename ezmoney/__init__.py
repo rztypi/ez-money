@@ -29,6 +29,13 @@ def create_app(test_config=None):
     app.register_blueprint(auth.bp)
     auth.init_oauth(app)
 
+    from . import expense
+    app.register_blueprint(expense.bp)
+    app.add_url_rule("/", endpoint="index")
+
+    from . import helpers
+    app.jinja_env.filters["currency"] = helpers.currency
+
     @app.route("/test")
     @auth.login_required
     def index():

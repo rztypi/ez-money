@@ -1,0 +1,21 @@
+.icon {
+  fill-opacity: 75%;
+  border: none;
+}
+
+.icon:hover {
+  fill-opacity: 90%;
+}
+
+.icon:active {
+  fill-opacity: 100%;
+}
+
+.hide {
+  display: none;
+}
+
+.card:hover .hide {
+  display: flex;
+  gap: 8px;
+}

@@ -1,13 +1,10 @@
 import functools
 
-from flask import (
-    Blueprint,
-    g,
-    redirect,
-    session,
-    url_for,
-)
+from flask import Blueprint, g, redirect, session, url_for
+
 from authlib.integrations.flask_client import OAuth
+
+from ezmoney.db import get_db
 
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
@@ -23,25 +20,50 @@ def login():
 @bp.route("/authorize")
 def authorize():
     token = oauth.google.authorize_access_token()
-    session["user_email"] = token["userinfo"]["email"]
+    session["user_id"] = token["userinfo"]["sub"]
+    save_user(token["userinfo"])
     return redirect(url_for("index"))
+
+
+def save_user(userinfo):
+    db = get_db()
+    user = db.execute("SELECT * FROM user WHERE id = ?", (userinfo["sub"],)).fetchone()
+
+    if user is None:
+        db.execute(
+            """
+            INSERT INTO user (id, email, given_name, family_name)
+            VALUES (?, ?, ?, ?)
+            """,
+            (
+                userinfo["sub"],
+                userinfo["email"],
+                userinfo["given_name"],
+                userinfo["family_name"],
+            )
+        )
+        db.commit()
 
 
 @bp.before_app_request
 def load_logged_in_user():
-    g.user_email = session.get("user_email")
+    g.user_id = session.get("user_id")
+    g.user = None
+
+    if g.user_id is not None:
+        g.user = get_db().execute("SELECT * FROM user WHERE id = ?", (g.user_id,)).fetchone()
 
 
 @bp.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("auth.login"))
+    return redirect(url_for("index"))
 
 
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if g.user_email is None:
+        if g.user_id is None:
             return redirect(url_for("auth.login"))
 
         return view(**kwargs)
