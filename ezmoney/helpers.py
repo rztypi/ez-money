@@ -12,7 +12,7 @@ def validate_amount(amount):
     except ValueError:
         return False
     
-    if float_amount < 0 or float_amount > 1_000_000_000:
+    if float_amount <= 0 or float_amount > 1_000_000_000:
         return False
     
     return True

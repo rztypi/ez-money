@@ -30,7 +30,7 @@
                   <span class="input-group-text">₱</span>
                   <input type="number" class="form-control" id="amount" name="amount" aria-label="Amount (to the nearest dollar)" step=".01" aria-describedby="amountHelpBlock">
                 </div>
-                <div id="amountHelpBlock" class="form-text">Amount must be a valid number between 0.00 and 1 billion.</div>
+                <div id="amountHelpBlock" class="form-text">Amount must be a valid number between 0.01 and 1 billion.</div>
               </div>
               <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
@@ -89,7 +89,7 @@
                     <span class="input-group-text">₱</span>
                     <input type="number" class="form-control" id="amount{{ expense.id }}" name="amount" aria-label="Amount (to the nearest dollar)" value="{{ expense.amount }}" step=".01" aria-describedby="amountHelpBlock{{ expense.id }}">
                   </div>
-                  <div id="amountHelpBlock{{ expense.id }}" class="form-text">Amount must be a valid number between 0.00 and 1 billion.</div>
+                  <div id="amountHelpBlock{{ expense.id }}" class="form-text">Amount must be a valid number between 0.01 and 1 billion.</div>
                 </div>
                 <div class="mb-3">
                   <label for="description{{ expense.id }}" class="form-label">Description</label>
