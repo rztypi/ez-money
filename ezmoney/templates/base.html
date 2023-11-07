@@ -18,13 +18,18 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            {% if g.user_id %}
+          {% if g.user_id %}
+            <li class="nav-item">
+              <a class="nav-link" href="#">Account</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
-            {% else %}
+            </li>
+          {% else %}
+            <li class="nav-item">
               <a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
-            {% endif %}
-          </li>
+            </li>
+          {% endif %}
         </ul>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import os
+from datetime import date
 
 from flask import Flask, g
 
@@ -35,6 +36,10 @@ def create_app(test_config=None):
 
     from . import helpers
     app.jinja_env.filters["currency"] = helpers.currency
+
+    @app.context_processor
+    def inject_date():
+        return dict(date=date)
 
     @app.route("/test")
     @auth.login_required

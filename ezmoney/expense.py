@@ -14,14 +14,16 @@ bp = Blueprint("expense", __name__)
 def index():
     db = get_db()
     expenses = []
+    total = None
 
     if g.user_id is not None:
         expenses = db.execute(
             "SELECT * FROM expense WHERE user_id = ? ORDER BY id DESC",
             (g.user_id,),
-        )
+        ).fetchall()
+        total = sum(expense["amount"] for expense in expenses)
 
-    return render_template("expense/index.html", expenses=expenses, date=date)
+    return render_template("expense/index.html", expenses=expenses, total=total)
 
 
 @bp.route("/add", methods=("POST",))
