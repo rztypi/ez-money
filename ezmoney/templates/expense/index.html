@@ -18,31 +18,47 @@
       </button>
     </div>
 
-    {% if expenses %}
-    <!-- Chart -->
-    <div class="w-50 mx-auto">
-      <canvas id="barGraph"></canvas>      
+    <div class="dropdown">
+      <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {% if request.args.t %}
+          {{ request.args.t }}
+        {% else %}
+          Time
+        {% endif %}
+      </a>
+    
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{ url_for('index', t='week') }}">This week</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('index', t='month') }}">This month</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('index', t='year') }}">This year</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('index', t='all') }}">All time</a></li>
+      </ul>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-      new Chart(
-        document.getElementById("barGraph"),
-        {
-          type: "bar",
-          data: {
-            labels: {{ expenses|map(attribute='created')|list|tojson }},
-            datasets: [
-              {
-                label: "amount",
-                data: {{ expenses|map(attribute='amount')|list|tojson }}
-              }
-            ]
-          }
-        }
-      )
-    </script>
-    {% endif %}
 
+    {% if expenses %}
+      <!-- Chart -->
+      <div class="w-50 mx-auto">
+        <canvas id="barGraph"></canvas>      
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        new Chart(
+          document.getElementById("barGraph"),
+          {
+            type: "bar",
+            data: {
+              labels: {{ expenses|map(attribute='created')|list|tojson }},
+              datasets: [
+                {
+                  label: "amount",
+                  data: {{ expenses|map(attribute='amount')|list|tojson }}
+                }
+              ]
+            }
+          }
+        )
+      </script>
+    {% endif %}
 
     <!-- Add modal -->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">

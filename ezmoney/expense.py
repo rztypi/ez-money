@@ -1,5 +1,3 @@
-from datetime import date
-
 from flask import Blueprint, redirect, render_template, url_for, g, request, flash
 
 from ezmoney.auth import login_required
@@ -12,15 +10,24 @@ bp = Blueprint("expense", __name__)
 
 @bp.route("/", methods=("GET", "POST"))
 def index():
-    db = get_db()
+    t = request.args.get("t")
     expenses = []
     total = None
+    db = get_db()
 
     if g.user_id is not None:
-        expenses = db.execute(
-            "SELECT * FROM expense WHERE user_id = ? ORDER BY id DESC",
-            (g.user_id,),
-        ).fetchall()
+        if t == "week":
+            expenses = db.execute(
+                "SELECT * FROM expense WHERE user_id = ? AND created >= date('now', '-7 days') ORDER BY created DESC",
+                (g.user_id,)
+            ).fetchall()
+        else:
+            expenses = db.execute(
+                "SELECT * FROM expense WHERE user_id = ? ORDER BY created DESC",
+                (g.user_id,),
+            ).fetchall()
+
+
         total = sum(expense["amount"] for expense in expenses)
 
     return render_template("expense/index.html", expenses=expenses, total=total)
