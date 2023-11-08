@@ -18,6 +18,7 @@
       </button>
     </div>
 
+    {% if expenses %}
     <!-- Chart -->
     <div class="w-50 mx-auto">
       <canvas id="barGraph"></canvas>      
@@ -40,6 +41,7 @@
         }
       )
     </script>
+    {% endif %}
 
 
     <!-- Add modal -->
