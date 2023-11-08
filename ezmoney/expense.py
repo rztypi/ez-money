@@ -31,37 +31,34 @@ def index():
 def add():
     amount = request.form.get("amount")
     description = request.form.get("description")
-    _date = request.form.get("date")
+    created = request.form.get("date")
     error = None
 
     if not amount:
         error = "Amount must be provided."
     elif not description:
         error = "Description must be provided."
-    elif not _date:
+    elif not created:
         error = "Date must be provided."
     elif not validate_amount(amount):
         error = "Invalid amount."
     elif not validate_description(description):
         error = "Invalid description."
-    elif not validate_date(_date):
+    elif not validate_date(created):
         error = "Invalid date."
 
     if error is None:
-        expense_date = date.fromisoformat(_date)
         db = get_db()
         db.execute(
             """
-            INSERT INTO expense (user_id, description, amount, day, month, year)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO expense (user_id, description, amount, created)
+            VALUES (?, ?, ?, ?)
             """,
             (
                 g.user_id,
                 description.strip(),
                 float(amount),
-                expense_date.day,
-                expense_date.month,
-                expense_date.year,
+                created
             ),
         )
         db.commit()
@@ -76,7 +73,7 @@ def add():
 def edit(id):
     amount = request.form.get("amount")
     description = request.form.get("description")
-    _date = request.form.get("date")
+    created = request.form.get("date")
     db = get_db()
     expense = db.execute(
         "SELECT * FROM expense WHERE id = ? AND user_id = ?", (id, g.user_id)
@@ -87,31 +84,28 @@ def edit(id):
         error = "Amount must be provided."
     elif not description:
         error = "Description must be provided."
-    elif not _date:
+    elif not created:
         error = "Date must be provided."
     elif not validate_amount(amount):
         error = "Invalid amount."
     elif not validate_description(description):
         error = "Invalid description."
-    elif not validate_date(_date):
+    elif not validate_date(created):
         error = "Invalid date."
     elif expense is None:
         error = "Expense does not exist."
 
     if error is None:
-        expense_date = date.fromisoformat(_date)
         db.execute(
             """
             UPDATE expense
-            SET description = ?, amount = ?, day = ?, month = ?, year = ?
+            SET description = ?, amount = ?, created = ?
             WHERE id = ?
             """,
             (
                 description.strip(),
                 float(amount),
-                expense_date.day,
-                expense_date.month,
-                expense_date.year,
+                created,
                 id,
             ),
         )

@@ -13,8 +13,6 @@ CREATE TABLE expense (
     user_id TEXT NOT NULL,
     description TEXT NOT NULL,
     amount NUMERIC NOT NULL,
-    day INTEGER NOT NULL,
-    month INTEGER NOT NULL,
-    year INTEGER NOT NULL,
+    created TEXT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
