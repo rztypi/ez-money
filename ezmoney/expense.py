@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 from flask import Blueprint, redirect, render_template, url_for, g, request, flash, session
 
 from ezmoney.auth import login_required
@@ -10,17 +12,19 @@ bp = Blueprint("expense", __name__)
 
 @bp.route("/", methods=("GET", "POST"))
 def index():
-    expenses = []
+    expenses = None
+    chart = None
     db = get_db()
 
     if g.user_id is not None:
         t = request.args.get("t")
         time_diff = {
             "week": "-7 days",
-            "month": "-1 month",
-            "year": "-1 year"
+            "month": "-30 days",
+            "year": "-365 days",
         }
         
+        # Get expenses
         if t in time_diff:
             expenses = db.execute(
                 "SELECT * FROM expense WHERE user_id = ? AND created >= date('now', ?) ORDER BY created",
@@ -33,8 +37,35 @@ def index():
                 (g.user_id,),
             ).fetchall()
             session["t"] = None
+        
+        # Get chart data if there are expenses
+        if expenses is not None:
+            chart = {
+                "labels": [],
+                "data": [],
+            }
 
-    return render_template("expense/index.html", expenses=expenses)
+            days_ago = 7
+
+            if t == "month":
+                days_ago = 30
+            if t == "year":
+                days_ago = 365
+            
+            for i in range(days_ago, -1, -1):
+                chart["labels"].append(i)
+
+                expense = db.execute(
+                    "SELECT SUM(amount) AS amount FROM expense WHERE user_id = ? AND created = ?",
+                    (
+                        g.user_id, 
+                        date.today() - timedelta(days=i),
+                    )
+                ).fetchone()
+                amount = 0 if expense["amount"] is None else expense["amount"]
+                chart["data"].append(amount)
+
+    return render_template("expense/index.html", expenses=expenses, chart=chart)
 
 
 @bp.route("/add", methods=("POST",))
@@ -69,7 +100,7 @@ def add():
                 g.user_id,
                 description.strip(),
                 float(amount),
-                created
+                created,
             ),
         )
         db.commit()
