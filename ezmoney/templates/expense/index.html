@@ -54,7 +54,9 @@
       </div>
     </div>
     
-    {% if expenses %}
+    {% if not expenses %}
+      <h1 class="display-6 text-muted text-center">No expenses to display.</h1>
+    {% else %}
       <!-- Chart w/ time dropdown -->
       <div class="mb-3 mx-auto" style="max-width: 720px;">
         <div class="d-flex justify-content-end align-items-center">
@@ -95,70 +97,70 @@
           }
         )
       </script>
-    {% endif %}
-
-    {% for expense in expenses|reverse %}
-      <!-- Expense card -->
-      <div class="card mx-auto mb-3" style="max-width: 700px;">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <h5 class="card-title">{{ expense.amount|currency }}</h5>
-            <div class="hide">
-              <button type="button" class="icon btn p-0" data-bs-toggle="modal" data-bs-target="#editModal{{ expense.id }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                  <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                </svg>
-              </button>
-              <button type="submit" class="icon btn p-0 ms-2" form="deleteForm{{ expense.id }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-                </svg>
-              </button>
+      
+      {% for expense in expenses|reverse %}
+        <!-- Expense card -->
+        <div class="card mx-auto mb-3" style="max-width: 700px;">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <h5 class="card-title">{{ expense.amount|currency }}</h5>
+              <div class="hide">
+                <button type="button" class="icon btn p-0" data-bs-toggle="modal" data-bs-target="#editModal{{ expense.id }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                  </svg>
+                </button>
+                <button type="submit" class="icon btn p-0 ms-2" form="deleteForm{{ expense.id }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                  </svg>
+                </button>
+              </div>
             </div>
+            <p class="card-subtitle mb-2 text-muted"><small>{{ expense.created }}</small></p>
+            <p class="card-text">{{ expense.description }}</p>
           </div>
-          <p class="card-subtitle mb-2 text-muted"><small>{{ expense.created }}</small></p>
-          <p class="card-text">{{ expense.description }}</p>
         </div>
-      </div>
 
-      <!-- Edit modal -->
-      <div class="modal fade" id="editModal{{ expense.id }}" tabindex="-1" aria-labelledby="editModalLabel{{ expense.id }}" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="editModalLabel{{ expense.id }}">Edit Expense</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form id="editForm{{ expense.id }}" method="post" action="{{ url_for('expense.edit', id=expense.id) }}">
-                <div class="mb-3">
-                  <label for="amount{{ expense.id }}" class="form-label">Amount</label>
-                  <div class="input-group">
-                    <span class="input-group-text">₱</span>
-                    <input type="number" class="form-control" id="amount{{ expense.id }}" name="amount" aria-label="Amount (to the nearest dollar)" value="{{ expense.amount }}" step=".01" aria-describedby="amountHelpBlock{{ expense.id }}">
+        <!-- Edit modal -->
+        <div class="modal fade" id="editModal{{ expense.id }}" tabindex="-1" aria-labelledby="editModalLabel{{ expense.id }}" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editModalLabel{{ expense.id }}">Edit Expense</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="editForm{{ expense.id }}" method="post" action="{{ url_for('expense.edit', id=expense.id) }}">
+                  <div class="mb-3">
+                    <label for="amount{{ expense.id }}" class="form-label">Amount</label>
+                    <div class="input-group">
+                      <span class="input-group-text">₱</span>
+                      <input type="number" class="form-control" id="amount{{ expense.id }}" name="amount" aria-label="Amount (to the nearest dollar)" value="{{ expense.amount }}" step=".01" aria-describedby="amountHelpBlock{{ expense.id }}">
+                    </div>
+                    <div id="amountHelpBlock{{ expense.id }}" class="form-text">Amount must be a valid number between 0.01 and 1 billion.</div>
                   </div>
-                  <div id="amountHelpBlock{{ expense.id }}" class="form-text">Amount must be a valid number between 0.01 and 1 billion.</div>
-                </div>
-                <div class="mb-3">
-                  <label for="description{{ expense.id }}" class="form-label">Description</label>
-                  <textarea class="form-control" id="description{{ expense.id }}" name="description" rows="3">{{ expense.description }}</textarea>
-                </div>
-                <div class="mb-3">
-                  <label for="date{{ expense.id }}" class="form-label">Date:</label>
-                  <input class="form-control" type="date" id="date{{ expense.id }}" name="date" value="{{ expense.created }}">
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <input type="reset" class="btn btn-secondary" form="editForm{{ expense.id }}" value="Close" data-bs-dismiss="modal">
-              <input type="submit" class="btn btn-primary" form="editForm{{ expense.id }}" value="Save">
+                  <div class="mb-3">
+                    <label for="description{{ expense.id }}" class="form-label">Description</label>
+                    <textarea class="form-control" id="description{{ expense.id }}" name="description" rows="3">{{ expense.description }}</textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="date{{ expense.id }}" class="form-label">Date:</label>
+                    <input class="form-control" type="date" id="date{{ expense.id }}" name="date" value="{{ expense.created }}">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <input type="reset" class="btn btn-secondary" form="editForm{{ expense.id }}" value="Close" data-bs-dismiss="modal">
+                <input type="submit" class="btn btn-primary" form="editForm{{ expense.id }}" value="Save">
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Delete form -->
-      <form id="deleteForm{{ expense.id }}" action="{{ url_for('expense.delete', id=expense.id) }}" method="post"></form>
-      {% endfor %}
+        <!-- Delete form -->
+        <form id="deleteForm{{ expense.id }}" action="{{ url_for('expense.delete', id=expense.id) }}" method="post"></form>
+        {% endfor %}
     {% endif %}
+  {% endif %}
 {% endblock %}
