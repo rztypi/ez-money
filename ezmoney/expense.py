@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, url_for, g, request, flash
+from flask import Blueprint, redirect, render_template, url_for, g, request, flash, session
 
 from ezmoney.auth import login_required
 from ezmoney.db import get_db
@@ -10,27 +10,31 @@ bp = Blueprint("expense", __name__)
 
 @bp.route("/", methods=("GET", "POST"))
 def index():
-    t = request.args.get("t")
     expenses = []
-    total = None
     db = get_db()
 
     if g.user_id is not None:
-        if t == "week":
+        t = request.args.get("t")
+        time_diff = {
+            "week": "-7 days",
+            "month": "-1 month",
+            "year": "-1 year"
+        }
+        
+        if t in time_diff:
             expenses = db.execute(
-                "SELECT * FROM expense WHERE user_id = ? AND created >= date('now', '-7 days') ORDER BY created DESC",
-                (g.user_id,)
+                "SELECT * FROM expense WHERE user_id = ? AND created >= date('now', ?) ORDER BY created",
+                (g.user_id, time_diff[t])
             ).fetchall()
+            session["t"] = t
         else:
             expenses = db.execute(
-                "SELECT * FROM expense WHERE user_id = ? ORDER BY created DESC",
+                "SELECT * FROM expense WHERE user_id = ? ORDER BY created",
                 (g.user_id,),
             ).fetchall()
+            session["t"] = None
 
-
-        total = sum(expense["amount"] for expense in expenses)
-
-    return render_template("expense/index.html", expenses=expenses, total=total)
+    return render_template("expense/index.html", expenses=expenses)
 
 
 @bp.route("/add", methods=("POST",))
@@ -72,7 +76,7 @@ def add():
     else:
         flash(error, "warning")
 
-    return redirect(url_for("index"))
+    return redirect(url_for("index", t=session.get("t")))
 
 
 @bp.route("/edit/<int:id>", methods=("POST",))
@@ -120,7 +124,8 @@ def edit(id):
         flash("Success!", "success")
     else:
         flash(error, "warning")
-    return redirect(url_for("index"))
+
+    return redirect(url_for("index", t=session.get("t")))
 
 
 @bp.route("/delete/<int:id>", methods=("POST",))
@@ -138,4 +143,4 @@ def delete(id):
     else:
         flash("Expense cannot be deleted.", "warning")
 
-    return redirect(url_for("index"))
+    return redirect(url_for("index", t=session.get("t")))
