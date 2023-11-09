@@ -17,44 +17,7 @@
         Add Expense
       </button>
     </div>
-
-    <div class="dropdown">
-      <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Time period
-      </a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ url_for('index', t='week') }}">Past week</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('index', t='month') }}">Past month</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('index', t='year') }}">Past year</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('index') }}">All time</a></li>
-      </ul>
-    </div>
-
-    {% if expenses %}
-      <!-- Chart -->
-      <div class="w-50 mb-3 mx-auto">
-        <canvas id="barGraph"></canvas>      
-      </div>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      <script>
-        new Chart(
-          document.getElementById("barGraph"),
-          {
-            type: "bar",
-            data: {
-              labels: {{ expenses|map(attribute='created')|list|tojson }},
-              datasets: [
-                {
-                  label: "amount",
-                  data: {{ expenses|map(attribute='amount')|list|tojson }}
-                }
-              ]
-            }
-          }
-        )
-      </script>
-    {% endif %}
-
+    
     <!-- Add modal -->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -90,6 +53,50 @@
         </div>
       </div>
     </div>
+    
+    {% if expenses %}
+      <!-- Chart w/ time dropdown -->
+      <div class="mb-3 mx-auto" style="max-width: 720px;">
+        <div class="d-flex justify-content-end align-items-center">
+          <div class="fw-light">Sort by: </div>
+          <div class="dropdown">
+            <button class="btn dropdown-toggle fw-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {% if request.args.t in ("week", "month", "year") %}
+                {{ request.args.t|capitalize }}
+              {% else %}
+                All time
+              {% endif %}
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('index', t='week') }}">Past week</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('index', t='month') }}">Past month</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('index', t='year') }}">Past year</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('index') }}">All time</a></li>
+            </ul>
+          </div>
+        </div>
+        <canvas id="barGraph"></canvas>      
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        new Chart(
+          document.getElementById("barGraph"),
+          {
+            type: "bar",
+            data: {
+              labels: {{ expenses|map(attribute='created')|list|tojson }},
+              datasets: [
+                {
+                  label: "amount",
+                  data: {{ expenses|map(attribute='amount')|list|tojson }}
+                }
+              ]
+            }
+          }
+        )
+      </script>
+    {% endif %}
+
     {% for expense in expenses|reverse %}
       <!-- Expense card -->
       <div class="card mx-auto mb-3" style="max-width: 700px;">
