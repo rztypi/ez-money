@@ -54,30 +54,43 @@
           </div>
         </div>
       </div>
+
+      <!-- Time dropdown -->
+      <div class="d-flex justify-content-end align-items-center mb-3">
+        <div class="fw-light">Sort by: </div>
+        <div class="dropdown">
+          <button class="btn dropdown-toggle fw-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {% if request.args.t in ("week", "month", "year") %}
+              {{ request.args.t|capitalize }}
+            {% else %}
+              All time
+            {% endif %}
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('index', t='week') }}">Past week</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('index', t='month') }}">Past month</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('index', t='year') }}">Past year</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('index') }}">All time</a></li>
+          </ul>
+        </div>
+      </div>
       
       {% if not expenses %}
-        <h1 class="display-6 text-muted text-center">No expenses to display.</h1>
+        <h1 class="display-6 text-muted text-center">
+          No expenses
+          {% if request.args.t == "week" %}
+            in the past week.
+          {% elif request.args.t == "month" %}
+            in the past month.
+          {% elif request.args.t == "year" %}
+            in the past year.
+          {% else %}
+            to display.
+          {% endif %}
+        </h1>
       {% else %}
-        <!-- Chart w/ time dropdown -->
+        <!-- Chart -->
         <div class="mb-3 mx-auto" style="max-width: 720px;">
-          <div class="d-flex justify-content-end align-items-center">
-            <div class="fw-light">Sort by: </div>
-            <div class="dropdown">
-              <button class="btn dropdown-toggle fw-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                {% if request.args.t in ("week", "month", "year") %}
-                  {{ request.args.t|capitalize }}
-                {% else %}
-                  All time
-                {% endif %}
-              </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{ url_for('index', t='week') }}">Past week</a></li>
-                <li><a class="dropdown-item" href="{{ url_for('index', t='month') }}">Past month</a></li>
-                <li><a class="dropdown-item" href="{{ url_for('index', t='year') }}">Past year</a></li>
-                <li><a class="dropdown-item" href="{{ url_for('index') }}">All time</a></li>
-              </ul>
-            </div>
-          </div>
           <canvas id="barGraph"></canvas>      
         </div>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
