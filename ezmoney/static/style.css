@@ -19,3 +19,12 @@
   display: flex;
   gap: 8px;
 }
+
+.navbar-brand span {
+  opacity: 75%;
+  transition: opacity 0.25s;
+}
+
+.navbar-brand:hover span {
+  opacity: 100%;
+}

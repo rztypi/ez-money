@@ -12,7 +12,15 @@
 <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container">
-      <a class="navbar-brand" href="{{ url_for('index') }}">EZ Money</a>
+      <a class="navbar-brand" href="{{ url_for('index') }}">
+        <div class="d-flex align-items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cash" viewBox="0 0 16 16">
+            <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+            <path d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z"/>
+          </svg>
+          <span>EZ Money</span>
+        </div>
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
