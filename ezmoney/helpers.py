@@ -24,8 +24,11 @@ def validate_description(description):
 
 def validate_date(_date):
     try:
-        date.fromisoformat(_date)
+        date_obj = date.fromisoformat(_date)
     except ValueError:
+        return False
+    
+    if date_obj > date.today():
         return False
         
     return True

@@ -18,17 +18,17 @@ def index():
 
     if g.user_id is not None:
         t = request.args.get("t")
-        time_diff = {
-            "week": "-7 days",
-            "month": "-30 days",
-            "year": "-365 days",
+        days_ago = {
+            "week": 7,
+            "month": 30,
+            "year": 365,
         }
         
         # Get expenses
-        if t in time_diff:
+        if t in days_ago:
             expenses = db.execute(
                 "SELECT * FROM expense WHERE user_id = ? AND created >= date('now', ?) ORDER BY created",
-                (g.user_id, time_diff[t])
+                (g.user_id, f"-{days_ago[t]} days")
             ).fetchall()
             session["t"] = t
         else:
@@ -39,20 +39,15 @@ def index():
             session["t"] = None
         
         # Get chart data if there are expenses
-        if expenses is not None:
+        if expenses:
             chart = {
                 "labels": [],
                 "data": [],
             }
 
-            days_ago = 7
-
-            if t == "month":
-                days_ago = 30
-            if t == "year":
-                days_ago = 365
+            farthest_day = (date.today() - date.fromisoformat(expenses[0]["created"])).days
             
-            for i in range(days_ago, -1, -1):
+            for i in range(days_ago.get(t, farthest_day), -1, -1):
                 chart["labels"].append(i)
 
                 expense = db.execute(

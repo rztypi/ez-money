@@ -170,7 +170,7 @@
                   </button>
                 </div>
               </div>
-              <p class="card-subtitle mb-2 text-muted"><small>{{ expense.created }}</small></p>
+              <p class="card-subtitle mb-2 text-muted"><small>{{ date.fromisoformat(expense.created).strftime("%b %d, %Y") }}</small></p>
               <p class="card-text">{{ expense.description }}</p>
             </div>
           </div>
