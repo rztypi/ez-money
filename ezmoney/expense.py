@@ -99,6 +99,7 @@ def add():
             ),
         )
         db.commit()
+        flash("Expense added.", "success")
     else:
         flash(error, "warning")
 
@@ -147,7 +148,7 @@ def edit(id):
             ),
         )
         db.commit()
-        flash("Success!", "success")
+        flash("Expense updated.", "success")
     else:
         flash(error, "warning")
 
@@ -165,7 +166,7 @@ def delete(id):
     if expense is not None:
         db.execute("DELETE FROM expense WHERE id = ?", (id,))
         db.commit()
-        flash("Deleted.", "success")
+        flash("Expense deleted.", "success")
     else:
         flash("Expense cannot be deleted.", "warning")
 
