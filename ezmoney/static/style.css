@@ -12,12 +12,12 @@
 }
 
 .hide {
-  display: none;
+  opacity: 0%;
+  transition: opacity 0.1s;
 }
 
 .card:hover .hide {
-  display: flex;
-  gap: 8px;
+  opacity: 100%;
 }
 
 .navbar-brand span {

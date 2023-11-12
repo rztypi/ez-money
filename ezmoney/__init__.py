@@ -36,6 +36,7 @@ def create_app(test_config=None):
 
     from . import helpers
     app.jinja_env.filters["currency"] = helpers.currency
+    app.jinja_env.filters["text_color"] = helpers.text_color
 
     @app.context_processor
     def inject_date():
