@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS expense;
+DROP TABLE IF EXISTS transactions;
 
 CREATE TABLE user (
     id TEXT PRIMARY KEY,
@@ -8,7 +8,7 @@ CREATE TABLE user (
     family_name TEXT
 );
 
-CREATE TABLE expense (
+CREATE TABLE transactions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id TEXT NOT NULL,
     description TEXT NOT NULL,

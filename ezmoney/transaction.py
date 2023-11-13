@@ -7,12 +7,12 @@ from ezmoney.db import get_db
 from ezmoney.helpers import validate_amount, validate_description, validate_date
 
 
-bp = Blueprint("expense", __name__)
+bp = Blueprint("transaction", __name__)
 
 
 @bp.route("/", methods=("GET", "POST"))
 def index():
-    expenses = None
+    transactions = None
     chart = None
     db = get_db()
 
@@ -24,43 +24,43 @@ def index():
             "year": 365,
         }
         
-        # Get expenses
+        # Get transactions
         if t in days_ago:
-            expenses = db.execute(
-                "SELECT * FROM expense WHERE user_id = ? AND created >= date('now', ?) ORDER BY created",
+            transactions = db.execute(
+                "SELECT * FROM transactions WHERE user_id = ? AND created >= date('now', ?) ORDER BY created",
                 (g.user_id, f"-{days_ago[t]} days")
             ).fetchall()
             session["t"] = t
         else:
-            expenses = db.execute(
-                "SELECT * FROM expense WHERE user_id = ? ORDER BY created",
+            transactions = db.execute(
+                "SELECT * FROM transactions WHERE user_id = ? ORDER BY created",
                 (g.user_id,),
             ).fetchall()
             session["t"] = None
         
-        # Get chart data if there are expenses
-        if expenses:
+        # Get chart data if there are transactions
+        if transactions:
             chart = {
                 "labels": [],
                 "data": [],
             }
 
-            farthest_day = (date.today() - date.fromisoformat(expenses[0]["created"])).days
+            farthest_day = (date.today() - date.fromisoformat(transactions[0]["created"])).days
             
             for i in range(days_ago.get(t, farthest_day), -1, -1):
                 chart["labels"].append(i)
 
-                expense = db.execute(
-                    "SELECT SUM(amount) AS amount FROM expense WHERE user_id = ? AND created = ?",
+                transaction = db.execute(
+                    "SELECT SUM(amount) AS amount FROM transactions WHERE user_id = ? AND created = ?",
                     (
                         g.user_id, 
                         date.today() - timedelta(days=i),
                     )
                 ).fetchone()
-                amount = 0 if expense["amount"] is None else expense["amount"]
+                amount = 0 if transaction["amount"] is None else transaction["amount"]
                 chart["data"].append(amount)
 
-    return render_template("expense/index.html", expenses=expenses, chart=chart)
+    return render_template("transaction/index.html", transactions=transactions, chart=chart)
 
 
 @bp.route("/add", methods=("POST",))
@@ -88,7 +88,7 @@ def add():
         db = get_db()
         db.execute(
             """
-            INSERT INTO expense (user_id, description, amount, created)
+            INSERT INTO transactions (user_id, description, amount, created)
             VALUES (?, ?, ?, ?)
             """,
             (
@@ -99,7 +99,7 @@ def add():
             ),
         )
         db.commit()
-        flash("Expense added.", "success")
+        flash("Transaction added.", "success")
     else:
         flash(error, "warning")
 
@@ -113,8 +113,8 @@ def edit(id):
     description = request.form.get("description")
     created = request.form.get("date")
     db = get_db()
-    expense = db.execute(
-        "SELECT * FROM expense WHERE id = ? AND user_id = ?", (id, g.user_id)
+    transaction = db.execute(
+        "SELECT * FROM transactions WHERE id = ? AND user_id = ?", (id, g.user_id)
     ).fetchone()
     error = None
 
@@ -130,13 +130,13 @@ def edit(id):
         error = "Invalid description."
     elif not validate_date(created):
         error = "Invalid date."
-    elif expense is None:
-        error = "Expense does not exist."
+    elif transaction is None:
+        error = "Transaction does not exist."
 
     if error is None:
         db.execute(
             """
-            UPDATE expense
+            UPDATE transactions
             SET description = ?, amount = ?, created = ?
             WHERE id = ?
             """,
@@ -148,7 +148,7 @@ def edit(id):
             ),
         )
         db.commit()
-        flash("Expense updated.", "success")
+        flash("Transaction updated.", "success")
     else:
         flash(error, "warning")
 
@@ -159,15 +159,15 @@ def edit(id):
 @login_required
 def delete(id):
     db = get_db()
-    expense = db.execute(
-        "SELECT * FROM expense WHERE id = ? AND user_id = ?", (id, g.user_id)
+    transaction = db.execute(
+        "SELECT * FROM transactions WHERE id = ? AND user_id = ?", (id, g.user_id)
     ).fetchone()
 
-    if expense is not None:
-        db.execute("DELETE FROM expense WHERE id = ?", (id,))
+    if transaction is not None:
+        db.execute("DELETE FROM transactions WHERE id = ?", (id,))
         db.commit()
-        flash("Expense deleted.", "success")
+        flash("Transaction deleted.", "success")
     else:
-        flash("Expense cannot be deleted.", "warning")
+        flash("Transaction cannot be deleted.", "warning")
 
     return redirect(url_for("index", t=session.get("t")))

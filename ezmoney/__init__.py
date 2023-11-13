@@ -30,8 +30,8 @@ def create_app(test_config=None):
     app.register_blueprint(auth.bp)
     auth.init_oauth(app)
 
-    from . import expense
-    app.register_blueprint(expense.bp)
+    from . import transaction
+    app.register_blueprint(transaction.bp)
     app.add_url_rule("/", endpoint="index")
 
     from . import helpers
