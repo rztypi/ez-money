@@ -45,7 +45,11 @@
                     <span class="input-group-text">₱</span>
                     <input type="number" class="form-control" id="amount" name="amount" aria-label="Amount (to the nearest dollar)" step=".01" aria-describedby="amountHelpBlock">
                   </div>
-                  <div id="amountHelpBlock" class="form-text">Amount must be a valid number between 0.01 and 1 billion.</div>
+                  <div id="amountHelpBlock" class="form-text">
+                    Input a positive amount for income, and a negative amount for expense.
+                    <br>
+                    Amount must be a valid number between -1 billion and 1 billion.
+                  </div>
                 </div>
                 <div class="mb-3">
                   <label for="description" class="form-label">Description</label>
@@ -210,7 +214,11 @@
                         <span class="input-group-text">₱</span>
                         <input type="number" class="form-control" id="amount{{ transaction.id }}" name="amount" aria-label="Amount (to the nearest dollar)" value="{{ transaction.amount }}" step=".01" aria-describedby="amountHelpBlock{{ transaction.id }}">
                       </div>
-                      <div id="amountHelpBlock{{ transaction.id }}" class="form-text">Amount must be a valid number between 0.01 and 1 billion.</div>
+                      <div id="amountHelpBlock{{ transaction.id }}" class="form-text">
+                        Input a positive amount for income, and a negative amount for expense.
+                        <br>
+                        Amount must be a valid number between -1 billion and 1 billion.
+                      </div>
                     </div>
                     <div class="mb-3">
                       <label for="description{{ transaction.id }}" class="form-label">Description</label>
