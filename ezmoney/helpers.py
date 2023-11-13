@@ -42,7 +42,7 @@ def currency(number):
         sign = "+"
     elif number < 0:
         sign = "-"
-    return f"{sign}₱{abs(number):,.2f}"
+    return f"{sign} ₱{abs(number):,.2f}"
 
 
 def text_color(number):
