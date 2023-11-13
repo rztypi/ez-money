@@ -14,7 +14,7 @@
       <div class="d-flex align-items-center justify-content-between my-3">
         <h1>
           <span class="lead d-block">Balance:</span>
-          <span class="display-6 fw-normal">{{ transactions|map(attribute="amount")|sum|currency }}</span>
+          <span class="display-6">{{ transactions|map(attribute="amount")|sum|currency }}</span>
         </h1>
         
         <!-- Add button -->
@@ -107,20 +107,28 @@
                 labels: {{ chart.labels|tojson }},
                 datasets: [
                   {
-                    label: "Amount",
-                    data: {{ chart.data|tojson }}
+                    label: "Expense",
+                    data: {{ chart.data.expense|tojson }},
+                    backgroundColor: "#dc3545"
+                  },
+                  {
+                    label: "Income",
+                    data: {{ chart.data.income|tojson }},
+                    backgroundColor: "#198754"
                   }
                 ]
               },
               options: {
                 scales: {
                   x: {
+                    stacked: true,
                     title: {
                       display: true,
                       text: "days ago"
                     }
                   },
                   y: {
+                    stacked: true,
                     title: {
                       display: true,
                       text: "₱"

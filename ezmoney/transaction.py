@@ -42,7 +42,10 @@ def index():
         if transactions:
             chart = {
                 "labels": [],
-                "data": [],
+                "data": {
+                    "expense": [],
+                    "income": [],
+                },
             }
 
             farthest_day = (date.today() - date.fromisoformat(transactions[0]["created"])).days
@@ -50,15 +53,25 @@ def index():
             for i in range(days_ago.get(t, farthest_day), -1, -1):
                 chart["labels"].append(i)
 
-                transaction = db.execute(
-                    "SELECT SUM(amount) AS amount FROM transactions WHERE user_id = ? AND created = ?",
+                expense = db.execute(
+                    "SELECT SUM(amount) AS amount FROM transactions WHERE user_id = ? AND created = ? AND amount < 0",
                     (
                         g.user_id, 
                         date.today() - timedelta(days=i),
                     )
                 ).fetchone()
-                amount = 0 if transaction["amount"] is None else transaction["amount"]
-                chart["data"].append(amount)
+                amount = 0 if expense["amount"] is None else expense["amount"]
+                chart["data"]["expense"].append(amount)
+
+                income = db.execute(
+                    "SELECT SUM(amount) AS amount FROM transactions WHERE user_id = ? AND created = ? AND amount > 0",
+                    (
+                        g.user_id, 
+                        date.today() - timedelta(days=i),
+                    )
+                ).fetchone()
+                amount = 0 if income["amount"] is None else income["amount"]
+                chart["data"]["income"].append(amount)
 
     return render_template("transaction/index.html", transactions=transactions, chart=chart)
 
