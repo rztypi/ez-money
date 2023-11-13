@@ -35,6 +35,7 @@ def create_app(test_config=None):
     app.add_url_rule("/", endpoint="index")
 
     from . import helpers
+    app.jinja_env.filters["abs_currency"] = helpers.abs_currency
     app.jinja_env.filters["currency"] = helpers.currency
     app.jinja_env.filters["text_color"] = helpers.text_color
 

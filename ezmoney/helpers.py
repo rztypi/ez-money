@@ -36,6 +36,10 @@ def validate_date(_date):
     return True
 
 
+def abs_currency(number):
+    return f"₱{abs(number):,.2f}"
+
+
 def currency(number):
     sign = ""
     if number > 0:

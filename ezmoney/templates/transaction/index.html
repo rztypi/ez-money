@@ -5,17 +5,23 @@
 {% block content %}
   <div class="mx-auto" style="max-width: 720px">
     {% if not g.user_id %}
-      <div class="mt-5 text-center">
+      <div class="text-center mt-5">
         <h1 class="display-6">EZ Money</h1>
         <p class="lead">An EZ expense tracker.</p>
         <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Log In</a>
       </div>
     {% else %}
       <div class="d-flex align-items-center justify-content-between my-3">
-        <h1>
-          <span class="lead d-block">Balance:</span>
-          <span class="display-6">{{ transactions|map(attribute="amount")|sum|currency }}</span>
-        </h1>
+        <div>
+          <h1>
+            <span class="lead d-block">Balance:</span>
+            <span class="display-6">{{ transactions|sum(attribute="amount")|currency }}</span>
+          </h1>
+          <div class="fw-light">
+            <p class="m-0">Expense: {{ transactions|map(attribute="amount")|select("lt", 0)|sum|abs_currency }}</p>
+            <p class="m-0">Income: {{ transactions|map(attribute="amount")|select("gt", 0)|sum|abs_currency }}</p>
+          </div>
+        </div>
         
         <!-- Add button -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
