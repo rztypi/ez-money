@@ -1,14 +1,15 @@
 .icon {
-  fill-opacity: 75%;
+  opacity: 75%;
+  transition: opacity 0.2s;
   border: none;
 }
 
 .icon:hover {
-  fill-opacity: 90%;
+  opacity: 90%;
 }
 
 .icon:active {
-  fill-opacity: 100%;
+  opacity: 100%;
 }
 
 .hide {
@@ -20,11 +21,11 @@
   opacity: 100%;
 }
 
-.navbar-brand span {
-  opacity: 75%;
-  transition: opacity 0.25s;
+.navbar-brand {
+  opacity: 80%;
+  transition: opacity 0.2s;
 }
 
-.navbar-brand:hover span {
+.navbar-brand:hover {
   opacity: 100%;
 }
