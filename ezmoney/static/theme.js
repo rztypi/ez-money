@@ -35,7 +35,14 @@
         return
       }
   
-      themeSwitcher.checked = (theme === "dark") ? false : true
+      const icon = themeSwitcher.querySelector("i")
+      if (theme === "dark") {
+        icon.classList.remove("bi-sun")
+        icon.classList.add("bi-moon-fill")
+      } else {
+        icon.classList.remove("bi-moon-fill")
+        icon.classList.add("bi-sun")
+      }
 
       if (focus) {
         themeSwitcher.focus()
@@ -53,9 +60,10 @@
       showActiveTheme(getPreferredTheme())
   
       document.getElementById("themeSwitch").addEventListener("click", (evt) => {
-        const theme = (evt.target.checked === false) ? "dark" : "light"
+        const theme = (getPreferredTheme() === "dark") ? "light" : "dark"
         setStoredTheme(theme)
         setTheme(theme)
+        showActiveTheme(theme)
       })
     })
   })()
