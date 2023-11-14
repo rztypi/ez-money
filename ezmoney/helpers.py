@@ -1,11 +1,7 @@
-import re
 from datetime import date
 
 
 def validate_amount(amount):
-    # pattern = r"(?:^\d+(?:\.\d{0,2})?$)|(?:^\d*\.\d{1,2}?$)"
-    # if re.match(pattern, amount) is None:
-    #     return False
     if "." in amount and len(amount.split(".")[-1]) > 2:
         return False
     
