@@ -1,0 +1,20 @@
+[project]
+name = "ezmoney"
+version = "1.0.0"
+description = "An EZ expense tracker."
+dependencies = [
+    "flask",
+    "Authlib",
+    "requests",
+]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["ezmoney"]
