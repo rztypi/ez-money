@@ -7,7 +7,7 @@ from ezmoney.db import get_db
 
 def test_index(client, auth):
     response = client.get("/")
-    assert b"An EZ expense tracker." in response.data
+    assert b"An EZ money tracker." in response.data
     assert b"Log In" in response.data
 
     auth.login_session()
