@@ -6,6 +6,7 @@ dependencies = [
     "flask",
     "Authlib",
     "requests",
+    "python-dotenv",
 ]
 
 [build-system]

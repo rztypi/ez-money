@@ -1,16 +1,19 @@
 import os
 from datetime import date
 
+from dotenv import load_dotenv
 from flask import Flask, g
 
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+
+    load_dotenv()
     app.config.from_mapping(
-        SECRET_KEY="thiswascs50",
+        SECRET_KEY=os.getenv("SECRET_KEY", "this_was_sc50"),
         DATABASE=os.path.join(app.instance_path, "ez-money.sqlite"),
-        GOOGLE_CLIENT_ID="856765862717-0f95vllgsdi7g887cu3q3up9veh57f3c.apps.googleusercontent.com",
-        GOOGLE_CLIENT_SECRET="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",
+        GOOGLE_CLIENT_ID=os.getenv("GOOGLE_CLIENT_ID", "client_id_here"),
+        GOOGLE_CLIENT_SECRET=os.getenv("GOOGLE_CLIENT_SECRET", "client_secret_here"),
     )
 
     if test_config is None:
