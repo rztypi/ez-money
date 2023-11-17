@@ -45,7 +45,7 @@ def create_app(test_config=None):
 
     @app.route("/test")
     @auth.login_required
-    def index():
-        return f"<h1>What's up, {g.user_email}</h1>"
+    def test():
+        return f"<h1>What's up, {g.user['email']}?</h1>"
     
     return app
