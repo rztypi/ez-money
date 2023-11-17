@@ -39,10 +39,10 @@ def abs_currency(number):
 def currency(number):
     sign = ""
     if number > 0:
-        sign = "+"
+        sign = "+ "
     elif number < 0:
-        sign = "-"
-    return f"{sign} ₱{abs(number):,.2f}"
+        sign = "- "
+    return f"{sign}₱{abs(number):,.2f}"
 
 
 def text_color(number):
