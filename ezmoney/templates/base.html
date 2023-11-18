@@ -24,31 +24,66 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!-- Theme switcher -->
         <ul class="navbar-nav ms-auto">
-          {% if g.user_id %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
-          </li>
-          {% else %}
+          {% if not g.user_id %}
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
           </li>
+          {% else %}
+
+          <!-- Settings button -->
+          <li class="nav-item">
+            <button class="btn nav-link py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#settings" aria-controls="settings">
+              <i class="bi bi-gear"></i>
+            </button>
+          </li>
+
           {% endif %}
           <li class="nav-item py-0 py-md-1">
             <div class="d-none d-md-block vr h-100 mx-2"></div>
             <hr class="d-md-none d-block my-2">
           </li>
+
+          <!-- Theme switcher -->
           <li class="nav-item">
             <button class="btn nav-link py-2" type="button" id="themeSwitch">
               <i class="bi bi-moon-fill"></i>
               <span class="d-md-none ms-2">Toggle theme</span>
             </button>
           </li>
+
         </ul>
       </div>
     </div>
   </nav>
+
+  {% if g.user_id %}
+    <!-- Settings offcanvas -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="settings" aria-labelledby="settingsLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="settingsLabel">Settings</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+
+        <form action="{{ url_for('settings.change_currency') }}" method="post" class="mb-3">
+          <label for="currencySelect" class="form-label">Currency</label>
+          <div class="input-group">
+            <select class="form-select" id="currencySelect" name="currency" aria-label="Currency select" required>
+              <option selected>{{ g.user["currency"] }}</option>
+              {% for money_format in money_formats %}
+                <option value="{{ money_format }}">{{ money_format }}</option>
+              {% endfor %}
+            </select>
+            <button class="btn btn-outline-primary" type="submit">Save</button>
+          </div>
+        </form>
+
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-secondary">Log Out</a>
+      </div>
+    </div>
+  {% endif %}
+
   <main class="container">
     {% for category, message in get_flashed_messages(with_categories=True) %}
       <div class="alert alert-{{ category }} alert-dismissible fade show m-3 text-center" role="alert">

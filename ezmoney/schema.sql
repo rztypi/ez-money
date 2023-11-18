@@ -5,7 +5,8 @@ CREATE TABLE user (
     id TEXT PRIMARY KEY,
     email TEXT NOT NULL,
     given_name TEXT NOT NULL,
-    family_name TEXT
+    family_name TEXT,
+    currency TEXT DEFAULT 'USD'
 );
 
 CREATE TABLE transactions (

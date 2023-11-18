@@ -1,8 +1,9 @@
 import os
 from datetime import date
 
-from dotenv import load_dotenv
 from flask import Flask, g
+from dotenv import load_dotenv
+from currencies import MONEY_FORMATS
 
 
 def create_app(test_config=None):
@@ -37,6 +38,9 @@ def create_app(test_config=None):
     app.register_blueprint(transaction.bp)
     app.add_url_rule("/", endpoint="index")
 
+    from . import settings
+    app.register_blueprint(settings.bp)
+
     from . import helpers
     app.jinja_env.filters["currency"] = helpers.currency
     app.jinja_env.filters["text_color"] = helpers.text_color
@@ -44,6 +48,10 @@ def create_app(test_config=None):
     @app.context_processor
     def inject_date():
         return dict(date=date)
+    
+    @app.context_processor
+    def inject_money_formats():
+        return dict(money_formats=list(MONEY_FORMATS))
 
     @app.route("/test")
     @auth.login_required

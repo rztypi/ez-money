@@ -1,5 +1,6 @@
 from datetime import date
 
+from flask import g
 from currencies import Currency
 
 
@@ -43,7 +44,7 @@ def currency(number, with_sign=False):
             sign = "- "
 
     formatted_number = f"{abs(number):,.2f}"
-    return f"{sign}{Currency('PHP').get_money_format(formatted_number)}"
+    return f"{sign}{Currency(g.user['currency']).get_money_format(formatted_number)}"
 
 
 def text_color(number):
