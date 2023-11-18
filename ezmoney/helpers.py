@@ -35,7 +35,7 @@ def validate_date(_date):
     return True
 
 
-def currency(number, with_sign=False):
+def format_currency(number, with_sign=False):
     sign = ""
     if with_sign:
         if number > 0:

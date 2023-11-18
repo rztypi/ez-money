@@ -42,7 +42,7 @@ def create_app(test_config=None):
     app.register_blueprint(settings.bp)
 
     from . import helpers
-    app.jinja_env.filters["currency"] = helpers.currency
+    app.jinja_env.filters["format_currency"] = helpers.format_currency
     app.jinja_env.filters["text_color"] = helpers.text_color
 
     @app.context_processor

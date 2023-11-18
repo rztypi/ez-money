@@ -15,11 +15,11 @@
         <div>
           <h1>
             <span class="lead d-block">Balance:</span>
-            <span class="display-6">{{ transactions|sum(attribute="amount")|currency(with_sign=True) }}</span>
+            <span class="display-6">{{ transactions|sum(attribute="amount")|format_currency(with_sign=True) }}</span>
           </h1>
           <div class="fw-light">
-            <p class="m-0">Expense: {{ transactions|map(attribute="amount")|select("lt", 0)|sum|currency }}</p>
-            <p class="m-0">Income: {{ transactions|map(attribute="amount")|select("gt", 0)|sum|currency }}</p>
+            <p class="m-0">Expense: {{ transactions|map(attribute="amount")|select("lt", 0)|sum|format_currency }}</p>
+            <p class="m-0">Income: {{ transactions|map(attribute="amount")|select("gt", 0)|sum|format_currency }}</p>
           </div>
         </div>
         
@@ -189,7 +189,7 @@
                 </div>
               </div>
               <div class="text-end flex-shrink-0 ms-3">
-                <h5 class="card-title fw-normal {{ transaction.amount|text_color }}">{{ transaction.amount|currency(with_sign=True) }}</h5>
+                <h5 class="card-title fw-normal {{ transaction.amount|text_color }}">{{ transaction.amount|format_currency(with_sign=True) }}</h5>
                 <p class="card-subtitle text-muted"><small>{{ date.fromisoformat(transaction.created).strftime("%b %d, %Y") }}</small></p>
               </div>
             </div>
