@@ -10,7 +10,7 @@ def create_app(test_config=None):
 
     load_dotenv()
     app.config.from_mapping(
-        SECRET_KEY=os.getenv("SECRET_KEY", "this_was_sc50"),
+        SECRET_KEY=os.getenv("SECRET_KEY", "this_was_cs50"),
         DATABASE=os.path.join(app.instance_path, "ez-money.sqlite"),
         GOOGLE_CLIENT_ID=os.getenv("GOOGLE_CLIENT_ID", "client_id_here"),
         GOOGLE_CLIENT_SECRET=os.getenv("GOOGLE_CLIENT_SECRET", "client_secret_here"),
