@@ -3,7 +3,7 @@ from datetime import date
 
 from flask import Flask, g
 from dotenv import load_dotenv
-from currencies import MONEY_FORMATS
+from currencies import Currency
 
 
 def create_app(test_config=None):
@@ -50,8 +50,8 @@ def create_app(test_config=None):
         return dict(date=date)
     
     @app.context_processor
-    def inject_money_formats():
-        return dict(money_formats=list(MONEY_FORMATS))
+    def inject_currency_formats():
+        return dict(currency_formats=Currency.get_currency_formats())
 
     @app.route("/test")
     @auth.login_required

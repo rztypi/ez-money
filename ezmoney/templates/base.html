@@ -71,8 +71,8 @@
           <div class="input-group">
             <select class="form-select" id="currencySelect" name="currency" aria-label="Currency select" required>
               <option selected>{{ g.user["currency"] }}</option>
-              {% for money_format in money_formats %}
-                <option value="{{ money_format }}">{{ money_format }}</option>
+              {% for currency in currency_formats %}
+                <option value="{{ currency }}">{{ currency }}</option>
               {% endfor %}
             </select>
             <button class="btn btn-outline-primary" type="submit">Save</button>
