@@ -1,5 +1,7 @@
 from datetime import date
 
+from currencies import Currency
+
 
 def validate_amount(amount):
     if "." in amount and len(amount.split(".")[-1]) > 2:
@@ -32,17 +34,16 @@ def validate_date(_date):
     return True
 
 
-def abs_currency(number):
-    return f"₱{abs(number):,.2f}"
-
-
-def currency(number):
+def currency(number, with_sign=False):
     sign = ""
-    if number > 0:
-        sign = "+ "
-    elif number < 0:
-        sign = "- "
-    return f"{sign}₱{abs(number):,.2f}"
+    if with_sign:
+        if number > 0:
+            sign = "+ "
+        elif number < 0:
+            sign = "- "
+
+    formatted_number = f"{abs(number):,.2f}"
+    return f"{sign}{Currency('PHP').get_money_format(formatted_number)}"
 
 
 def text_color(number):

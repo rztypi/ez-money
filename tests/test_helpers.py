@@ -1,4 +1,4 @@
-from ezmoney.helpers import validate_amount, validate_description, validate_date, abs_currency, currency, text_color
+from ezmoney.helpers import validate_amount, validate_description, validate_date, currency, text_color
 
 
 def test_validate_amount():
@@ -33,20 +33,19 @@ def test_validate_date():
     assert validate_date("2012-12-12")
 
 
-def test_abs_currency():
-    assert abs_currency(100) == "₱100.00"
-    assert abs_currency(-100) == "₱100.00"
-    assert abs_currency(0) == "₱0.00"
-    assert abs_currency(0.11111) == "₱0.11"
-    assert abs_currency(-0.1) == "₱0.10"
-
-
 def test_currency():
-    assert currency(100) == "+ ₱100.00"
-    assert currency(-100) == "- ₱100.00"
+    assert currency(100) == "₱100.00"
+    assert currency(-100) == "₱100.00"
     assert currency(0) == "₱0.00"
-    assert currency(0.11111) == "+ ₱0.11"
-    assert currency(-0.1) == "- ₱0.10"
+    assert currency(0.11111) == "₱0.11"
+    assert currency(-0.1) == "₱0.10"
+
+    assert currency(100, with_sign=True) == "+ ₱100.00"
+    assert currency(-100, with_sign=True) == "- ₱100.00"
+    assert currency(0, with_sign=True) == "₱0.00"
+    assert currency(0.11111, with_sign=True) == "+ ₱0.11"
+    assert currency(-0.1, with_sign=True) == "- ₱0.10"
+
 
 
 def test_text_color():

@@ -33,9 +33,11 @@ def test_index(client, auth):
     response = client.get("/", query_string={"t": "gibberish"})
     assert b"labels: [0]" in response.data
 
-    auth.login_session("notransactions")
+    auth.logout()
+    auth.login_session(user_id="notransactions")
     response = client.get("/")
-    assert b"No transactions to display."
+    print(response.data)
+    assert b"No transactions" in response.data
 
 
 @pytest.mark.parametrize("path", (
