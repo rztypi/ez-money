@@ -1,3 +1,7 @@
+body {
+  min-height: 100vh;
+}
+
 .icon {
   opacity: 75%;
   transition: opacity 0.2s;
@@ -27,5 +31,18 @@
 }
 
 .navbar-brand:hover {
+  opacity: 100%;
+}
+
+footer .nav-link {
+  opacity: 75%;
+  transition: opacity 0.2s;
+}
+
+footer .nav-link:hover {
+  opacity: 90%;
+}
+
+footer .nav-link:active {
   opacity: 100%;
 }
