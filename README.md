@@ -9,11 +9,13 @@
 
 #### Features:
 
+- Responsive web design using [Bootstrap](https://getbootstrap.com/)
 - Google OAuth 2.0 authentication using [Authlib](https://authlib.org/)
 - Data management using [SQLite](https://docs.python.org/3/library/sqlite3.html)
 - Data visualization using [Chart.js](https://www.chartjs.org/)
+- Currency format changer using [currencies](https://pypi.org/project/currencies/)
 
-This is my final project for [CS50x](https://cs50.harvard.edu/x/).
+> *This is my final project for [CS50x](https://cs50.harvard.edu/x/).*
 
 ## Setup
 
