@@ -1,4 +1,4 @@
-from ezmoney.helpers import validate_amount, validate_description, validate_date, currency, text_color
+from ezmoney.helpers import validate_amount, validate_description, validate_date, format_currency, text_color
 
 
 def test_validate_amount():
@@ -33,18 +33,24 @@ def test_validate_date():
     assert validate_date("2012-12-12")
 
 
-def test_currency():
-    assert currency(100) == "₱100.00"
-    assert currency(-100) == "₱100.00"
-    assert currency(0) == "₱0.00"
-    assert currency(0.11111) == "₱0.11"
-    assert currency(-0.1) == "₱0.10"
+def test_format_currency(client, auth, settings):
+    auth.login_session()
 
-    assert currency(100, with_sign=True) == "+ ₱100.00"
-    assert currency(-100, with_sign=True) == "- ₱100.00"
-    assert currency(0, with_sign=True) == "₱0.00"
-    assert currency(0.11111, with_sign=True) == "+ ₱0.11"
-    assert currency(-0.1, with_sign=True) == "- ₱0.10"
+    with client:
+        client.get("/")
+        assert format_currency(100) == "$100.00"
+        assert format_currency(-100) == "$100.00"
+        assert format_currency(0) == "$0.00"
+        assert format_currency(0.11111) == "$0.11"
+        assert format_currency(-0.1) == "$0.10"
+
+        settings.change_currency(currency="PHP")
+        client.get("/")
+        assert format_currency(100, with_sign=True) == "+ ₱100.00"
+        assert format_currency(-100, with_sign=True) == "- ₱100.00"
+        assert format_currency(0, with_sign=True) == "₱0.00"
+        assert format_currency(0.11111, with_sign=True) == "+ ₱0.11"
+        assert format_currency(-0.1, with_sign=True) == "- ₱0.10"
 
 
 

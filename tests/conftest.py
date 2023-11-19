@@ -55,3 +55,16 @@ class AuthActions:
 @pytest.fixture
 def auth(client):
     return AuthActions(client)
+
+
+class SettingsActions:
+    def __init__(self, client):
+        self._client = client
+    
+    def change_currency(self, currency="USD"):
+        return self._client.post("/settings/change-currency", data={"currency": currency})
+    
+
+@pytest.fixture
+def settings(client):
+    return SettingsActions(client)

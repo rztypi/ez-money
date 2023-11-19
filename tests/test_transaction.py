@@ -17,7 +17,7 @@ def test_index(client, auth):
     assert b"Log Out" in response.data
     assert b"this is an expense" in response.data
     assert b"this is an income" in response.data
-    assert "₱1,000.00".encode() in response.data
+    assert "$1,000.00".encode() in response.data
     assert f"{date.today()}".encode() in response.data
     assert b"barGraph" in response.data
 
