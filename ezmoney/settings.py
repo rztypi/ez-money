@@ -2,12 +2,14 @@ from flask import Blueprint, g, request, flash, redirect, url_for
 from currencies import Currency, CurrencyDoesNotExist
 
 from ezmoney.db import get_db
+from ezmoney.auth import login_required
 
 
 bp = Blueprint("settings", __name__, url_prefix="/settings")
 
 
 @bp.route("/change-currency", methods=("POST",))
+@login_required
 def change_currency():
     currency = request.form.get("currency")
     error = None
