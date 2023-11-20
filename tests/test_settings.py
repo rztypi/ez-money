@@ -19,3 +19,13 @@ def test_change_currency(auth, client, settings):
     settings.change_currency(currency="ZMW")
     response = client.get("/")
     assert b"<option selected>ZMW</option>" in response.data
+
+
+def test_delete_all(auth, client):
+    auth.login_session()
+
+    response = client.get("/")
+    assert b"No transactions" not in response.data
+
+    response = client.post("/settings/delete-all", follow_redirects=True)
+    assert b"No transactions" in response.data

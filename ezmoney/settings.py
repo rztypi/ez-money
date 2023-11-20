@@ -38,3 +38,15 @@ def change_currency():
         flash(error, "warning")
 
     return redirect(url_for("index"))
+
+
+@bp.route("/delete-all", methods=("POST",))
+@login_required
+def delete_all():
+    db = get_db()
+    db.execute("DELETE FROM transactions")
+    db.commit()
+
+    flash("All transactions deleted.", "success")
+
+    return redirect(url_for("index"))
