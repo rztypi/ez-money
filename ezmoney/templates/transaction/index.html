@@ -242,3 +242,66 @@
     {% endif %}
   </div>
 {% endblock %}
+
+{% block settings %}
+  <!-- Settings offcanvas -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="settings" aria-labelledby="settingsLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="settingsLabel">Settings</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column">
+
+      <form action="{{ url_for('settings.change_currency') }}" method="post" class="mb-3">
+        <label for="currencySelect" class="form-label">Currency</label>
+        <div class="input-group">
+          <select class="form-select" id="currencySelect" name="currency" aria-label="Currency select" required>
+            <option selected>{{ g.user["currency"] }}</option>
+              {% for currency in currency_formats %}
+                <option value="{{ currency }}">{{ currency }}</option>
+              {% endfor %}
+          </select>
+          <button class="btn btn-outline-primary" type="submit">Save</button>
+        </div>
+      </form>
+
+      <div class="form-check form-switch mb-3">
+        {% if not transactions %}
+          <input class="form-check-input" type="checkbox" role="switch" id="graphSwitch" disabled>
+        {% else %}
+          <input class="form-check-input" type="checkbox" role="switch" id="graphSwitch">
+        {% endif %}
+        <label class="form-check-label" for="graphSwitch">Show graph</label>
+      </div>
+
+      {% if not transactions %}
+        <button class="btn btn-outline-danger mb-3" type="button" disabled>Delete All Transactions</button>
+      {% else %}
+        <button class="btn btn-outline-danger mb-3" type="button" data-bs-toggle="modal" data-bs-target="#deleteAllModal">Delete All Transactions</button>
+      {% endif %}
+
+      <a href="{{ url_for('auth.logout') }}" class="btn btn-secondary">Log Out</a>
+    </div>
+  </div>
+
+  {% if transactions %}
+    <!-- Delete all modal -->
+    <div class="modal fade" id="deleteAllModal" tabindex="-1" aria-labelledby="deleteAllModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteAllModalLabel">Delete All Transactions</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete all transactions?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

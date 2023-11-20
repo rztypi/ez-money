@@ -58,37 +58,7 @@
     </div>
   </nav>
 
-  {% if g.user_id %}
-    <!-- Settings offcanvas -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="settings" aria-labelledby="settingsLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="settingsLabel">Settings</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-
-        <form action="{{ url_for('settings.change_currency') }}" method="post" class="mb-3">
-          <label for="currencySelect" class="form-label">Currency</label>
-          <div class="input-group">
-            <select class="form-select" id="currencySelect" name="currency" aria-label="Currency select" required>
-              <option selected>{{ g.user["currency"] }}</option>
-              {% for currency in currency_formats %}
-                <option value="{{ currency }}">{{ currency }}</option>
-              {% endfor %}
-            </select>
-            <button class="btn btn-outline-primary" type="submit">Save</button>
-          </div>
-        </form>
-
-        <div class="form-check form-switch mb-3">
-          <input class="form-check-input" type="checkbox" role="switch" id="graphSwitch" checked>
-          <label class="form-check-label" for="graphSwitch">Show graph</label>
-        </div>
-
-        <a href="{{ url_for('auth.logout') }}" class="btn btn-secondary">Log Out</a>
-      </div>
-    </div>
-  {% endif %}
+  {% block settings %}{% endblock %}
 
   <main class="container mb-5">
     {% for category, message in get_flashed_messages(with_categories=True) %}
