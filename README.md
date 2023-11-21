@@ -1,6 +1,7 @@
 <div align="center">
     <h1>💵 EZ Money</h1>
     <p>An <a href="https://www.dictionary.com/browse/ez">EZ</a> money tracker.</p>
+    <a href="https://youtu.be/RX3WES8dKO0"><em>🎥 See it in action!</em></a>
 </div>
 
 ## About
