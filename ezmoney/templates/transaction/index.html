@@ -42,7 +42,7 @@
                 <div class="mb-3">
                   <label for="amount" class="form-label">Amount</label>
                   <div class="input-group">
-                    <span class="input-group-text">₱</span>
+                    <span class="input-group-text">{{ g.user["currency"] }}</span>
                     <input type="number" class="form-control" id="amount" name="amount" aria-label="Amount (to the nearest dollar)" min="-1000000000" max="1000000000" step=".01" aria-describedby="amountHelpBlock" required>
                   </div>
                   <div id="amountHelpBlock" class="form-text">
@@ -208,7 +208,7 @@
                     <div class="mb-3">
                       <label for="amount{{ transaction.id }}" class="form-label">Amount</label>
                       <div class="input-group">
-                        <span class="input-group-text">₱</span>
+                        <span class="input-group-text">{{ g.user["currency"] }}</span>
                         <input type="number" class="form-control" id="amount{{ transaction.id }}" name="amount" aria-label="Amount (to the nearest dollar)" value="{{ transaction.amount }}" min="-1000000000" max="1000000000" step=".01" aria-describedby="amountHelpBlock{{ transaction.id }}" required>
                       </div>
                       <div id="amountHelpBlock{{ transaction.id }}" class="form-text">
