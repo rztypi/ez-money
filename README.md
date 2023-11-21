@@ -52,3 +52,43 @@ It's fairly easy to get it started:
     ```console
     $ flask --app ezmoney run
     ```
+
+## Usage
+
+### Logging In
+
+EZ Money uses Google OAuth 2.0 for authentication, so you can use any Google account to log in and use the application.
+
+### Transaction Operations
+
+#### Add
+
+You can add an income or an expense by pressing the `Add Transaction` button.
+
+Add an income by inputting a positive number. Add an expense by inputting a negative number. You can only input numbers between -1 billion and 1 billion, and with no more than 2 decimal places. A description and date must also be provided. The date must also be valid, and the app will not accept dates that are greater than the current date.
+
+#### Edit
+
+Hover over a transaction and press the `Edit` (✏️) button to edit it. The same rules for adding apply.
+
+#### Delete
+
+Hover over a transaction and press the `Delete` (🗑️) button to delete it.
+
+### Sorting Transactions
+
+You can sort transactions by week, month, and year via the `Sort by` dropdown menu. It defaults to "All time."
+
+### Settings
+
+#### Changing Currency Format
+
+You can change the format of the currency via the currency selector. It uses the [currencies](https://pypi.org/project/currencies/) Python package to do this.
+
+#### Graph Visibility
+
+You can toggle the visibility of the graph by toggling the graph visibility switch.
+
+#### Deleting All Transactions
+
+If you want to delete all of your transactions, you can do so by clicking the `Delete All Transactions` button. Be careful! You can not undo this process.
